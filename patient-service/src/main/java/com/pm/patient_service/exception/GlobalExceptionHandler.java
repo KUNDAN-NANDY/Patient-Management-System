@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandler extends RuntimeException {
+public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
@@ -27,6 +27,14 @@ public class GlobalExceptionHandler extends RuntimeException {
         Map<String, String> errors = new HashMap<>();
 
         errors.put("Message", "Email address already exists");
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePatientNotFoundException(PatientNotFoundException ex){
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put("Message", "Patient not found with this ID");
         return ResponseEntity.badRequest().body(errors);
     }
 }
